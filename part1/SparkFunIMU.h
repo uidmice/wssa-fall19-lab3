@@ -21,7 +21,6 @@ class SparkFunIMU
 {
   protected:
     status_t driverStatus; // Stores status of last operation
-
   public:
     // begin() returns up to 16 who_am_i bits.  If there is only one serial
     //   device the MSBs will be zero
@@ -38,6 +37,7 @@ class SparkFunIMU
     virtual float readMagZ()   { return NAN; }
     virtual float readTempC()  { return NAN; }
     virtual float readTempF()  { return NAN; }
+    virtual status_t WHO_AM_I(){ return IMU_HW_ERROR; }
 
     status_t getStatus() { return driverStatus; }
 

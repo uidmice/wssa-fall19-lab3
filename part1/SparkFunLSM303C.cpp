@@ -114,6 +114,18 @@ float LSM303C::readMagZ()
   return readMag(zAxis);
 }
 
+status_t LSM303C::WHO_AM_I()
+{
+  uint8_t value;
+  if (MAG_ReadReg(MAG_WHO_AM_I, value)){
+    return IMU_HW_ERROR;
+  }else if (value != WHO_AM_I_MAG){
+    return IMU_HW_ERROR;
+  }else
+    return IMU_SUCCESS;
+  
+}
+
 float LSM303C::readAccelX()
 {
   uint8_t flag_ACC_STATUS_FLAGS;

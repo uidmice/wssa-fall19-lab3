@@ -16,22 +16,7 @@
 static const char AERROR[] = "\nAccel Error";
 static const char MERROR[] = "\nMag Error";
 
-// Define SPI pins (Pro Mini)
-//  D10 -> SDI/SDO
-//  D11 -> SCLK
-//  D12 -> CS_XL
-//  D13 -> CS_MAG
-//#define CSPORT_MAG PORTB
-//#define CSBIT_MAG  5
-//#define CSPORT_XL  PORTB
-//#define CSBIT_XL   4
-//#define CLKPORT    PORTB
-//#define CLKBIT     3
-//#define DATAPORTI  PINB
-//#define DATAPORTO  PORTB
-//#define DATABIT    2
-
-// End SPI pin definitions
+#define WHO_AM_I_MAG 0x3D
 
 
 class LSM303C : public SparkFunIMU
@@ -51,6 +36,7 @@ class LSM303C : public SparkFunIMU
     float   readMagZ(void);
     float  readTempC(void);
     float  readTempF(void);
+    status_t WHO_AM_I(void);
 
   protected:
     // Variables to store the most recently read raw data from sensor
