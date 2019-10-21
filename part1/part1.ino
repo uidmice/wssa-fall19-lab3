@@ -1,5 +1,3 @@
-// I2C interface by default
-//
 #include "Wire.h"
 #include "SparkFunIMU.h"
 #include "SparkFunLSM303C.h"
@@ -98,26 +96,11 @@ static void PrintData(void* arg){
 
     xSemaphoreGive( sem );
     vTaskDelay((INT_ms * configTICK_RATE_HZ) / 1000L);
-
-//    xStatus1 = xQueueReceive(xQueue, vX, 0);
-//    xStatus1 = xQueueReceive(xQueue, vY, 0);
-//    xStatus1 = xQueueReceive(xQueue, vZ, 0);
-
-
   }
  
     
 }
 
-static void ulExampleInterruptHandler( void ) {
-  BaseType_t xHigherP = pdTRUE;
-  xSemaphoreGiveFromISR( sem, &xHigherP );
-}
 
-
-
-void loop()
-{
-
-
+void loop(){
 }
