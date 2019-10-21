@@ -46,7 +46,7 @@ void setup() {
 
   
   // check for creation errors
-  if ( sem==NULL || s1 != pdPASS || s2 != pdPASS ||  xQueue==NULL) {
+  if ( sem==NULL ||  s1 != pdPASS || s2 != pdPASS ||  xQueue==NULL) {
      SerialUSB.println(F("Creation problem"));
      while(1);
   }
@@ -59,6 +59,7 @@ void setup() {
 
 static void ReadData(void* arg){
   float vX, vY, vZ;
+  TickType_t xLast = xTaskGetTickCount();
   while (1){
     xSemaphoreTake( sem, 0 );
     vX = myIMU.readMagX();
@@ -70,7 +71,7 @@ static void ReadData(void* arg){
     xQueueSend(xQueue, &vZ, 0 );
     
     xSemaphoreGive( sem );
-    vTaskDelay((INT_ms * configTICK_RATE_HZ) / 1000L);
+    vTaskDelayUntil(&xLast, (INT_ms * configTICK_RATE_HZ) / 1000L);
 
   }
 
@@ -79,11 +80,10 @@ static void ReadData(void* arg){
 
 static void PrintData(void* arg){
   float vX, vY, vZ;
-  BaseType_t xStatus1, xStatus2, xStatus3;
 
   while(1){
     xSemaphoreTake( sem, portMAX_DELAY );
-    if (xQueueReceive(xQueue, &vX, 0)==pdPASS && xQueueReceive(xQueue, &vY, 0)==pdPASS && xQueueReceive(xQueue, &vZ, 0)==pdPASS){
+    if (xQueueReceive(xQueue, &vX, portMAX_DELAY)==pdPASS && xQueueReceive(xQueue, &vY, portMAX_DELAY)==pdPASS && xQueueReceive(xQueue, &vZ, portMAX_DELAY)==pdPASS){
       SerialUSB.print("\nMagnetometer:\n X = ");
       SerialUSB.println(vX, 4);
       SerialUSB.print(" Y = ");
@@ -95,7 +95,6 @@ static void PrintData(void* arg){
     }
 
     xSemaphoreGive( sem );
-    vTaskDelay((INT_ms * configTICK_RATE_HZ) / 1000L);
   }
  
     
