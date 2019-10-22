@@ -8,8 +8,8 @@
 // Chip Select Pin for SPI
 #define CS_PIN 51
 
-#define READ  0x01111111   // write command
-#define WRITE 0x11111111
+#define READ  01111111   // write command
+#define WRITE 10000000
 
 
 //Function Declarations

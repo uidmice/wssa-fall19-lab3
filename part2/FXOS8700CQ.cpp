@@ -23,7 +23,6 @@ FXOS8700CQ::FXOS8700CQ() {
 //------------------------------------------------------------------------------
 void FXOS8700CQ::writeReg(uint8_t reg, uint8_t data) {
   spi_write_cmd(reg, data);
-
 }
 
 //------------------------------------------------------------------------------
@@ -38,7 +37,6 @@ uint8_t FXOS8700CQ::readReg(uint8_t reg) {
 //------------------------------------------------------------------------------
 void FXOS8700CQ::readMagData() {
   
-
 }
 //------------------------------------------------------------------------------
 // standby(): Put the FXOS8700CQ into standby mode for writing to registers
@@ -63,8 +61,15 @@ void FXOS8700CQ::active() {
 //------------------------------------------------------------------------------
 void FXOS8700CQ::init() {
   SPI.beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE1));
+  //write to CTRL_REG1 reg, set to 100Hz and enter active mode
+  byte data = (MODR_100HZ << 3 ) | 0x01;
+  writeReg(FXOS8700CQ_CTRL_REG1, data);
 
-    
+  //write to M_CTRL_REG1 reg, set to Mag-only mode and OSR = 5
+  data = (MOSR_5 << 2 ) | 0x01 ;
+  writeReg(FXOS8700CQ_M_CTRL_REG1, data);
+
+  checkWhoAmI();
 }
 
 //------------------------------------------------------------------------------
@@ -73,7 +78,9 @@ void FXOS8700CQ::init() {
 void FXOS8700CQ::checkWhoAmI(void) {
   byte data = readReg(FXOS8700CQ_WHO_AM_I);
   if (data!=whoAmIData)
-  SerialUSB.println("ERROR: whoAmIData mismatch!!");
+    SerialUSB.println("ERROR: whoAmIData mismatch!!");
+  else 
+    debug_println("ID identified successfully." );
 }
 
 //*****************************************************************************

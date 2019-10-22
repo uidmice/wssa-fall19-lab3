@@ -10,6 +10,11 @@
 #include <Arduino.h>
 #include <SPI.h>
 #include "spi_trans.h"
+#include "DebugMacros.h"
+
+
+#define DEBUG 1
+
 
 // Chip Select Pin for SPI
 #define CS_PIN 51
