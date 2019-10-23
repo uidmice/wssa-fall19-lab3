@@ -13,7 +13,7 @@
 #include "DebugMacros.h"
 
 
-#define DEBUG 1
+#define DEBUG 0
 
 
 // Chip Select Pin for SPI

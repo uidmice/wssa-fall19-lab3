@@ -26,5 +26,16 @@ void setup() {
 }
 
 void loop() {
-//Fill code here to read from chip
+  sensor.readMagData();
+  SerialUSB.print("\nMagnetometer:\n X = ");
+  SerialUSB.print(sensor.magData.x*0.1, 1);
+  SerialUSB.println(" uT");
+  SerialUSB.print(" Y = ");
+  SerialUSB.print(sensor.magData.y*0.1, 1);
+  SerialUSB.println(" uT");
+  SerialUSB.print(" Z = ");
+  SerialUSB.print(sensor.magData.z*0.1, 1);
+  SerialUSB.println(" uT");
+
+  delay(10);
 }

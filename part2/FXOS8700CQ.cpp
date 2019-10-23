@@ -1,10 +1,6 @@
 #include "FXOS8700CQ.h"
 #include <math.h>
 
-//******************************************************************************
-// Public Function Definitions
-//------------------------------------------------------------------------------
-
 //------------------------------------------------------------------------------
 // FXOS8700CQ(): Initialize configuration parameters
 //------------------------------------------------------------------------------
@@ -36,12 +32,39 @@ uint8_t FXOS8700CQ::readReg(uint8_t reg) {
 // readMagData(): Read the magnometer X, Y and Z axisdata
 //------------------------------------------------------------------------------
 void FXOS8700CQ::readMagData() {
-  
+  uint8_t XU = readReg(FXOS8700CQ_M_OUT_X_MSB);
+  uint8_t XL = readReg(FXOS8700CQ_M_OUT_X_LSB);
+  uint8_t YU = readReg(FXOS8700CQ_M_OUT_Y_MSB);
+  uint8_t YL = readReg(FXOS8700CQ_M_OUT_Y_LSB);
+  uint8_t ZU = readReg(FXOS8700CQ_M_OUT_Z_MSB);
+  uint8_t ZL = readReg(FXOS8700CQ_M_OUT_Z_LSB);
+  magData.x = (int16_t) (XU<<8)+XL;
+  magData.y = (int16_t) (YU<<8)+YL;
+  magData.z = (int16_t) (ZU<<8)+ZL;
+  debug_print("MagX read: ");
+  debug_prints(magData.x, DEC);
+  debug_prints("(0x");
+  debug_prints(magData.x, HEX);
+  debug_printlns(")");
+  debug_prints("MagY read: ");
+  debug_prints(magData.y, DEC);
+  debug_prints("(0x");
+  debug_prints(magData.y, HEX);
+  debug_printlns(")");
+  debug_prints("MagZ read: ");
+  debug_prints(magData.z, DEC);
+  debug_prints("(0x");
+  debug_prints(magData.z, HEX);
+  debug_printlns(")");
+
 }
 //------------------------------------------------------------------------------
 // standby(): Put the FXOS8700CQ into standby mode for writing to registers
 //------------------------------------------------------------------------------
 void FXOS8700CQ::standby() {
+  uint8_t old = readReg(FXOS8700CQ_CTRL_REG1);
+  uint8_t data = old & 0b11111110; //clear the active bit
+  writeReg(FXOS8700CQ_CTRL_REG1, data);
 
 }
 
@@ -49,7 +72,9 @@ void FXOS8700CQ::standby() {
 // active(): Put the FXOS8700CQ into active mode to output data
 //------------------------------------------------------------------------------
 void FXOS8700CQ::active() {
-
+  uint8_t old = readReg(FXOS8700CQ_CTRL_REG1);
+  uint8_t data = old | 0b00000001; //set the active bit
+  writeReg(FXOS8700CQ_CTRL_REG1, data);
 }
 
 //------------------------------------------------------------------------------
@@ -60,7 +85,7 @@ void FXOS8700CQ::active() {
 //         it back in active mode
 //------------------------------------------------------------------------------
 void FXOS8700CQ::init() {
-  SPI.beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE1));
+  SPI.beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE0));
   //write to CTRL_REG1 reg, set to 100Hz and enter active mode
   byte data = (MODR_100HZ << 3 ) | 0x01;
   writeReg(FXOS8700CQ_CTRL_REG1, data);
