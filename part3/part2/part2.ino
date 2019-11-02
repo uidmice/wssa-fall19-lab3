@@ -26,9 +26,20 @@ void setup() {
 }
 
 void loop() {
+  digitalWrite(6, HIGH);
+  digitalWrite(7, HIGH);
+  digitalWrite(8, HIGH);
+  SerialUSB.println("start");
   for (int i = 0; i < 10000; i ++){
-      sensor.readMagData(FXOS8700CQ_WHO_AM_I);
+      sensor.readReg(FXOS8700CQ_WHO_AM_I);
 
   }
-  delay(1000);
+    SerialUSB.println("end");
+
+  digitalWrite(6, LOW);
+  digitalWrite(7, LOW);
+  digitalWrite(8, LOW);
+
+
+  delay(3000);
 }
