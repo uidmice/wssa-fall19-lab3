@@ -17,7 +17,7 @@
 
 
 // Chip Select Pin for SPI
-#define CS_PIN 51
+#define CS_PIN 4
 
 //------------------------------------------------------------------------------
 // Register Addresses

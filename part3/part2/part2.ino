@@ -12,10 +12,7 @@ void setup() {
   digitalWrite(7, LOW);
   digitalWrite(8, LOW);
 
-  // Initialize SerialUSB 
-  SerialUSB.begin(9600);
-  while(!SerialUSB);
-  
+
   // Initialize SPI
   SPI.begin();
 
@@ -29,12 +26,12 @@ void loop() {
   digitalWrite(6, HIGH);
   digitalWrite(7, HIGH);
   digitalWrite(8, HIGH);
-  SerialUSB.println("start");
-  for (int i = 0; i < 10000; i ++){
-      sensor.readReg(FXOS8700CQ_WHO_AM_I);
+  //  SerialUSB.println("start");
+  for (int i = 0; i < 10000; i ++) {
+    sensor.readReg(FXOS8700CQ_WHO_AM_I);
 
   }
-    SerialUSB.println("end");
+  //    SerialUSB.println("end");
 
   digitalWrite(6, LOW);
   digitalWrite(7, LOW);

@@ -10,6 +10,12 @@ void setup() {
   //set up I2C bus
   Wire1.begin();
   Wire1.setClock(400000L);//set up I2C bus clock to 400kHz
+  pinMode(6, OUTPUT);
+  pinMode(7, OUTPUT);
+  pinMode(8, OUTPUT);
+  digitalWrite(6, LOW);
+  digitalWrite(7, LOW);
+  digitalWrite(8, LOW);
 
   //Set up serial
   SerialUSB.begin(57600);//initialize SerialUSB monitor, maximum reliable baud for 3.3V/8Mhz ATmega328P is 57600
@@ -38,8 +44,20 @@ void setup() {
 
 
 void loop(){
-  for (int i = 0; i < 10000; i++){
+    digitalWrite(6, HIGH);
+  digitalWrite(7, HIGH);
+  digitalWrite(8, HIGH);
+  //  SerialUSB.println("start");
+  for (int i = 0; i < 10000; i ++) {
     myIMU.readMagX();
+
   }
-  delay(1000);
+  //    SerialUSB.println("end");
+
+  digitalWrite(6, LOW);
+  digitalWrite(7, LOW);
+  digitalWrite(8, LOW);
+  
+
+  delay(3000);
 }
