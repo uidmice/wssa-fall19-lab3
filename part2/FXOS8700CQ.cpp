@@ -5,8 +5,8 @@
 // FXOS8700CQ(): Initialize configuration parameters
 //------------------------------------------------------------------------------
 FXOS8700CQ::FXOS8700CQ() {
-		magODR = MODR_100HZ; // Magnetometer data/sampling rate
-		magOSR = MOSR_5;     // Choose magnetometer oversample rate
+    magODR = MODR_100HZ; // Magnetometer data/sampling rate
+    magOSR = MOSR_5;     // Choose magnetometer oversample rate
     magData = {0, 0, 0};      
     whoAmIData = FXOS8700CQ_WHOAMI_VAL;     
 
@@ -87,11 +87,11 @@ void FXOS8700CQ::active() {
 void FXOS8700CQ::init() {
   SPI.beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE0));
   //write to CTRL_REG1 reg, set to 100Hz and enter active mode
-  byte data = (MODR_100HZ << 3 ) | 0x01;
+  byte data = (magODR << 3 ) | 0x01;
   writeReg(FXOS8700CQ_CTRL_REG1, data);
 
   //write to M_CTRL_REG1 reg, set to Mag-only mode and OSR = 5
-  data = (MOSR_5 << 2 ) | 0x01 ;
+  data = (magOSR << 2 ) | 0x01 ;
   writeReg(FXOS8700CQ_M_CTRL_REG1, data);
 
   checkWhoAmI();
